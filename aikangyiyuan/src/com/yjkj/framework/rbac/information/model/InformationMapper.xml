@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yjkj.framework.rbac.information.dao.InformationDao">
+	<resultMap type="com.yjkj.framework.rbac.information.model.Information" id="informationMap">
+	<association property="userInfo" javaType="com.yjkj.framework.rbac.userInfo.model.UserInfo" column="user_id" select="com.yjkj.framework.rbac.userInfo.dao.UserInfoDao.queryOne"></association>
+	<association property="information" javaType="com.yjkj.framework.rbac.information.model.Information" column="information_id" select="com.yjkj.framework.rbac.information.dao.InformationDao.informationLoadOne"></association>
+	</resultMap>
+	<select id="informationLoad" parameterType="java.util.HashMap"
+		resultMap="informationMap">
+		SELECT
+		*
+		FROM
+		information 
+		<where>
+			<if test="information.searchName!=null and information.searchName!=''">
+				AND CONCAT(name,start,end,start_time,end_time,number,price) LIKE CONCAT(CONCAT('%', #{information.searchName}), '%')
+			</if>
+		</where>
+		ORDER BY
+		id
+		DESC
+		LIMIT
+		#{pager.offSet},#{pager.pageSize}
+	</select>
+	<select id="informationLoadAll" parameterType="java.util.HashMap"
+		resultMap="informationMap">
+		SELECT
+		*
+		FROM
+		information 
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="count" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		information
+		<where>
+			<if test="searchName!=null and searchName!=''">
+				AND CONCAT(name,start,end,start_time,end_time,number,price) LIKE CONCAT(CONCAT('%', #{searchName}), '%')
+			</if>
+		</where>
+	</select>
+	<select id="informationLoadOne"  resultMap="informationMap">
+		SELECT
+		*
+		FROM
+		information
+		WHERE
+		id=#{id}
+	</select>
+
+
+	<delete id="informationDelete" >
+		DELETE
+		FROM
+		information
+		WHERE
+		id=#{id}
+	</delete>
+
+
+	<insert id="informationAdd" parameterType="com.yjkj.framework.rbac.information.model.Information">
+		INSERT INTO
+		information
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="start != null">
+				start,
+			</if>
+			<if test="end != null">
+				end,
+			</if>
+			<if test="number != null">
+				number,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="start_time != null">
+				start_time,
+			</if>
+			<if test="end_time != null">
+				end_time,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="start != null">
+				#{start},
+			</if>
+			<if test="end != null">
+				#{end},
+			</if>
+			<if test="number != null">
+				#{number},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="start_time != null">
+				#{start_time},
+			</if>
+			<if test="end_time != null">
+				#{end_time},
+			</if>
+			<if test="createtime != null">
+				#{createtime},
+			</if>
+			<if test="flag != null">
+				#{flag},
+			</if>
+		</trim>
+	</insert>
+	<update id="informationUpdate" parameterType="com.yjkj.framework.rbac.information.model.Information">
+		UPDATE
+		information
+		<set>
+			<if test="id != null">
+				id=#{id},
+			</if>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="start != null">
+				start=#{start},
+			</if>
+			<if test="end != null">
+				end=#{end},
+			</if>
+			<if test="number != null">
+				number=#{number},
+			</if>
+			<if test="price != null">
+				price=#{price},
+			</if>
+			<if test="start_time != null">
+				start_time=#{start_time},
+			</if>
+			<if test="end_time != null">
+				end_time=#{end_time},
+			</if>
+			<if test="createtime != null">
+				createtime=#{createtime},
+			</if>
+			<if test="flag != null">
+				flag=#{flag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+</mapper>

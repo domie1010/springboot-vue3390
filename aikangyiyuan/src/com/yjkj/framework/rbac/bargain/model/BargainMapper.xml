@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yjkj.framework.rbac.bargain.dao.BargainDao">
+	<resultMap type="com.yjkj.framework.rbac.bargain.model.Bargain" id="bargainMap">
+	<association property="userInfo" javaType="com.yjkj.framework.rbac.userInfo.model.UserInfo" column="user_id" select="com.yjkj.framework.rbac.userInfo.dao.UserInfoDao.queryOne"></association>
+	<association property="doctor" javaType="com.yjkj.framework.rbac.doctor.model.Doctor" column="doctor_id" select="com.yjkj.framework.rbac.doctor.dao.DoctorDao.informationLoadOne"></association>
+	</resultMap>
+	<select id="informationLoad" parameterType="java.util.HashMap"
+		resultMap="bargainMap">
+		SELECT
+		*
+		FROM
+		bargain 
+		<where>
+			<if test="bargain.user_id != null and bargain.user_id != ''">
+				user_id = #{bargain.user_id}
+			</if>
+		</where>
+		ORDER BY
+		id
+		DESC
+		LIMIT
+		#{pager.offSet},#{pager.pageSize}
+	</select>
+	<select id="informationLoadAll" parameterType="java.util.HashMap"
+		resultMap="bargainMap">
+		SELECT
+		*
+		FROM
+		bargain 
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="informationLoadUser" parameterType="java.util.HashMap"
+		resultMap="bargainMap">
+		SELECT
+		*
+		FROM
+		bargain 
+		<where>
+			<if test="user_id != null and user_id != ''">
+				user_id = #{user_id}
+			</if>
+		</where>
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="count" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		bargain
+		<where>
+			<if test="user_id != null and user_id != ''">
+				user_id = #{user_id}
+			</if>
+		</where>
+	</select>
+	<select id="informationLoadOne"  resultMap="bargainMap">
+		SELECT
+		*
+		FROM
+		bargain
+		WHERE
+		id=#{id}
+	</select>
+
+
+	<delete id="informationDelete" >
+		DELETE
+		FROM
+		bargain
+		WHERE
+		id=#{id}
+	</delete>
+
+
+	<insert id="informationAdd" parameterType="com.yjkj.framework.rbac.bargain.model.Bargain">
+		INSERT INTO
+		bargain
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="doctor_id != null">
+				doctor_id,
+			</if>
+			<if test="user_id != null">
+				user_id,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="doctor_id != null">
+				#{doctor_id},
+			</if>
+			<if test="user_id != null">
+				#{user_id},
+			</if>
+			<if test="createtime != null">
+				#{createtime},
+			</if>
+			<if test="flag != null">
+				#{flag},
+			</if>
+		</trim>
+	</insert>
+	<update id="informationUpdate" parameterType="com.yjkj.framework.rbac.bargain.model.Bargain">
+		UPDATE
+		bargain
+		<set>
+			<if test="id != null">
+				id=#{id},
+			</if>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="doctor_id != null">
+				doctor_id=#{doctor_id},
+			</if>
+			<if test="user_id != null">
+				user_id=#{user_id},
+			</if>
+			<if test="createtime != null">
+				createtime=#{createtime},
+			</if>
+			<if test="flag != null">
+				flag=#{flag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+</mapper>

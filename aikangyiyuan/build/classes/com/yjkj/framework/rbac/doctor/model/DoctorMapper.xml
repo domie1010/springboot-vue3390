@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yjkj.framework.rbac.doctor.dao.DoctorDao">
+	<resultMap type="com.yjkj.framework.rbac.doctor.model.Doctor" id="doctorMap">
+	<association property="part" javaType="com.yjkj.framework.rbac.part.model.Part" column="part_id" select="com.yjkj.framework.rbac.part.dao.PartDao.informationLoadOne"></association>
+	</resultMap>
+	<select id="informationLoad" parameterType="java.util.HashMap"
+		resultMap="doctorMap">
+		SELECT
+		*
+		FROM
+		doctor 
+		<where>
+			<if test="doctor.part_id != null and doctor.part_id != ''">
+				part_id = #{doctor.part_id}
+			</if>
+			<if test="doctor.type != null and doctor.type != ''">
+				AND type = #{doctor.type}
+			</if>
+		</where>
+		ORDER BY
+		id
+		DESC
+		LIMIT
+		#{pager.offSet},#{pager.pageSize}
+	</select>
+	<select id="informationLoadAll" parameterType="java.util.HashMap"
+		resultMap="doctorMap">
+		SELECT
+		*
+		FROM
+		doctor 
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="informationLoadUser" parameterType="java.util.HashMap"
+		resultMap="doctorMap">
+		SELECT
+		*
+		FROM
+		doctor 
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="count" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		doctor
+		<where>
+			<if test="part_id != null and part_id != ''">
+				part_id = #{part_id}
+			</if>
+			<if test="type != null and type != ''">
+				AND type = #{type}
+			</if>
+		</where>
+	</select>
+	<select id="informationLoadOne"  resultMap="doctorMap">
+		SELECT
+		*
+		FROM
+		doctor
+		WHERE
+		id=#{id}
+	</select>
+
+
+	<delete id="informationDelete" >
+		DELETE
+		FROM
+		doctor
+		WHERE
+		id=#{id}
+	</delete>
+
+
+	<insert id="informationAdd" parameterType="com.yjkj.framework.rbac.doctor.model.Doctor">
+		INSERT INTO
+		doctor
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="part_id != null">
+				part_id,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="age != null">
+				age,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="price != null">
+				#{price},
+			</if>
+			<if test="part_id != null">
+				#{part_id},
+			</if>
+			<if test="sex != null">
+				#{sex},
+			</if>
+			<if test="age != null">
+				#{age},
+			</if>
+			<if test="url != null">
+				#{url},
+			</if>
+			<if test="createtime != null">
+				#{createtime},
+			</if>
+			<if test="flag != null">
+				#{flag},
+			</if>
+		</trim>
+	</insert>
+	<update id="informationUpdate" parameterType="com.yjkj.framework.rbac.doctor.model.Doctor">
+		UPDATE
+		doctor
+		<set>
+			<if test="id != null">
+				id=#{id},
+			</if>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="type != null">
+				type=#{type},
+			</if>
+			<if test="price != null">
+				price=#{price},
+			</if>
+			<if test="part_id != null">
+				part_id=#{part_id},
+			</if>
+			<if test="sex != null">
+				sex=#{sex},
+			</if>
+			<if test="age != null">
+				age=#{age},
+			</if>
+			<if test="url != null">
+				url=#{url},
+			</if>
+			<if test="createtime != null">
+				createtime=#{createtime},
+			</if>
+			<if test="flag != null">
+				flag=#{flag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+</mapper>
